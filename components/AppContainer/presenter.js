@@ -7,7 +7,7 @@ class AppContainer extends Component {
   static propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
   };
-  render() {
+  render () {
     const {isLoggedIn} = this.props;
     return (
       <View style={styles.container}>
@@ -18,7 +18,7 @@ class AppContainer extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create ({
   container: {
     flex: 1,
     backgroundColor: '#fff',

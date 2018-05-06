@@ -5,16 +5,16 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/es/integration/react';
 import configureStore from './redux/configureStore';
-const {persistor, store} = configureStore();
+const {persistor, store} = configureStore ();
 import AppContainer from './components/AppContainer';
 
+store.dispatch ({type: 'LOG_OUT'});
 class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
-
-  render() {
-    const isLoadingComplete = this.state;
+  render () {
+    const {isLoadingComplete} = this.state;
     if (!isLoadingComplete) {
       return (
         <AppLoading
@@ -32,26 +32,25 @@ class App extends React.Component {
       </Provider>
     );
   }
-
   _loadAssetsAsync = async () => {
-    return Promise.all([
-      Asset.loadAsync([
-        require('./assets/images/logo.png'),
-        require('./assets/images/logo-white.png'),
-        require('./assets/images/noPhoto.jpg'),
-        require('./assets/images/photoPlaceholder.png'),
+    return Promise.all ([
+      Asset.loadAsync ([
+        require ('./assets/images/logo.png'),
+        require ('./assets/images/logo-white.png'),
+        require ('./assets/images/noPhoto.jpg'),
+        require ('./assets/images/photoPlaceholder.png'),
       ]),
-      Font.loadAsync({
+      Font.loadAsync ({
         ...Ionicons.font,
         ...MaterialIcons.font,
       }),
     ]);
   };
   _handleLoadingError = error => {
-    console.error(error);
+    console.error (error);
   };
   _handleFinishLoading = async () => {
-    this.setState({
+    this.setState ({
       isLoadingComplete: true,
     });
   };

@@ -11,13 +11,13 @@ const persistConfig = {
   storage,
 };
 
-const reducer = persistCombineReducers(persistConfig, {
+const reducer = persistCombineReducers (persistConfig, {
   user,
 });
 
 const configureStore = () => {
-  let store = createStore(reducer, applyMiddleware(...middlewares));
-  let persistor = persistStore(store);
+  let store = createStore (reducer, applyMiddleware (...middlewares));
+  let persistor = persistStore (store);
   return {store, persistor};
 };
 
