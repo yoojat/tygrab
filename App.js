@@ -9,11 +9,15 @@ const {persistor, store} = configureStore ();
 import AppContainer from './components/AppContainer';
 
 store.dispatch ({type: 'LOG_OUT'});
+console.log ('outside', store.getState ());
+
 class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
   render () {
+    console.log ('inside', store.getState ());
+
     const {isLoadingComplete} = this.state;
     if (!isLoadingComplete) {
       return (
@@ -26,9 +30,9 @@ class App extends React.Component {
     }
     return (
       <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <AppContainer />
-        </PersistGate>
+        {/* <PersistGate persistor={persistor}> */}
+        <AppContainer />
+        {/* </PersistGate> */}
       </Provider>
     );
   }
