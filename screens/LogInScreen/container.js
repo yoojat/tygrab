@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
-import LogInScreen from './presenter';
-import {Alert} from 'react-native';
+import React, { Component } from "react";
+import LogInScreen from "./presenter";
+import { Alert } from "react-native";
 
 class Container extends Component {
   state = {
-    username: '',
-    password: '',
-    isSubmitting: false,
+    username: "",
+    password: "",
+    isSubmitting: false
   };
-  render () {
+  render() {
     return (
       <LogInScreen
         {...this.state}
@@ -19,23 +19,29 @@ class Container extends Component {
     );
   }
   _changeUsername = text => {
-    this.setState ({username: text});
+    this.setState({ username: text });
   };
   _changePassword = text => {
-    this.setState ({password: text});
+    this.setState({ password: text });
   };
-  _submit = () => {
-    const {username, password, isSubmitting} = this.state;
-    const {login} = this.props;
+  _submit = async () => {
+    const { username, password, isSubmitting } = this.state;
+    const { login } = this.props;
     if (!isSubmitting) {
       if (username && password) {
-        this.setState ({
-          isSubmitting: true,
+        this.setState({
+          isSubmitting: true
         });
-        login (username, password);
+        const loginResult = await login(username, password);
+        if (!loginResult) {
+          Alert.alert("Something went wrong, try agin");
+          this.setState({
+            isSubmitting: false
+          });
+        }
         //redux action
       } else {
-        Alert.alert ('All fields are required');
+        Alert.alert("All fields are required");
       }
     }
   };

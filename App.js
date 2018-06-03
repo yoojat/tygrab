@@ -1,24 +1,20 @@
-import React from 'react';
-import {AppLoading, Asset, Font} from 'expo';
-import {Ionicons, MaterialIcons} from '@expo/vector-icons';
-import {StyleSheet, Text, View} from 'react-native';
-import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/es/integration/react';
-import configureStore from './redux/configureStore';
-const {persistor, store} = configureStore ();
-import AppContainer from './components/AppContainer';
-
-store.dispatch ({type: 'LOG_OUT'});
-console.log ('outside', store.getState ());
+import React from "react";
+import { AppLoading, Asset, Font } from "expo";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { StyleSheet, Text, View } from "react-native";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/es/integration/react";
+import configureStore from "./redux/configureStore";
+const { persistor, store } = configureStore();
+import AppContainer from "./components/AppContainer";
 
 class App extends React.Component {
   state = {
-    isLoadingComplete: false,
+    isLoadingComplete: false
   };
-  render () {
-    console.log ('inside', store.getState ());
-
-    const {isLoadingComplete} = this.state;
+  render() {
+    // store.dispatch({ type: "LOG_OUT" });
+    const { isLoadingComplete } = this.state;
     if (!isLoadingComplete) {
       return (
         <AppLoading
@@ -30,32 +26,32 @@ class App extends React.Component {
     }
     return (
       <Provider store={store}>
-        {/* <PersistGate persistor={persistor}> */}
-        <AppContainer />
-        {/* </PersistGate> */}
+        <PersistGate persistor={persistor}>
+          <AppContainer />
+        </PersistGate>
       </Provider>
     );
   }
   _loadAssetsAsync = async () => {
-    return Promise.all ([
-      Asset.loadAsync ([
-        require ('./assets/images/logo.png'),
-        require ('./assets/images/logo-white.png'),
-        require ('./assets/images/noPhoto.jpg'),
-        require ('./assets/images/photoPlaceholder.png'),
+    return Promise.all([
+      Asset.loadAsync([
+        require("./assets/images/logo.png"),
+        require("./assets/images/logo-white.png"),
+        require("./assets/images/noPhoto.jpg"),
+        require("./assets/images/photoPlaceholder.png")
       ]),
-      Font.loadAsync ({
+      Font.loadAsync({
         ...Ionicons.font,
-        ...MaterialIcons.font,
-      }),
+        ...MaterialIcons.font
+      })
     ]);
   };
   _handleLoadingError = error => {
-    console.error (error);
+    console.error(error);
   };
   _handleFinishLoading = async () => {
-    this.setState ({
-      isLoadingComplete: true,
+    this.setState({
+      isLoadingComplete: true
     });
   };
 }

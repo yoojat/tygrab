@@ -1,54 +1,55 @@
 // Imports
 
-import {API_URL} from '../../constants';
-import {AsyncStorage} from 'react-native';
+import { API_URL } from "../../constants";
+import { AsyncStorage } from "react-native";
 
 // Actions
 
-const LOG_IN = 'LOG_IN';
-const LOG_OUT = 'LOG_OUT';
-const SET_USER = 'SET_USER';
+const LOG_IN = "LOG_IN";
+const LOG_OUT = "LOG_OUT";
+const SET_USER = "SET_USER";
 
 // Action Creators
 
-function setLogIn (token) {
+function setLogIn(token) {
   return {
     type: LOG_IN,
-    token,
+    token
   };
 }
 
-function setUser (user) {
+function setUser(user) {
   return {
     type: SET_USER,
-    user,
+    user
   };
 }
 
-function logOut () {
-  return {type: LOG_OUT};
+function logOut() {
+  return { type: LOG_OUT };
 }
 
 // API Actions
-function login (username, password) {
+function login(username, password) {
   return dispatch => {
-    fetch (`${API_URL}/rest-auth/login/`, {
-      method: 'POST',
+    return fetch(`${API_URL}/rest-auth/login/`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify ({
+      body: JSON.stringify({
         username,
-        password,
-      }),
+        password
+      })
     })
-      .then (response => response.json ())
-      .then (json => {
-        if (json.token) {
-          dispatch (setLogIn (json.token));
-        }
-        if (json.user) {
-          dispatch (setUser (json.user));
+      .then(response => response.json())
+      .then(json => {
+        if (json.user && json.token) {
+          dispatch(setLogIn(json.token));
+          dispatch(setUser(json.user));
+          return true;
+        } else {
+          return false;
         }
       });
   };
@@ -57,19 +58,19 @@ function login (username, password) {
 // Initial State
 
 const initialState = {
-  isLoggedIn: false,
+  isLoggedIn: false
 };
 
 // Reducer
 
-function reducer (state = initialState, action) {
+function reducer(state = initialState, action) {
   switch (action.type) {
     case LOG_IN:
-      return applyLogIn (state, action);
+      return applyLogIn(state, action);
     case LOG_OUT:
-      return applyLogOut (state, action);
+      return applyLogOut(state, action);
     case SET_USER:
-      return applySetUser (state, action);
+      return applySetUser(state, action);
     default:
       return state;
   }
@@ -77,39 +78,39 @@ function reducer (state = initialState, action) {
 
 // Reducer Functions
 
-function applyLogIn (state, action) {
-  const {token} = action;
+function applyLogIn(state, action) {
+  const { token } = action;
   return {
     ...state,
     isLoggedIn: true,
-    token,
+    token
   };
 }
 
-function applyLogOut (state, action) {
-  AsyncStorage.clear ();
+function applyLogOut(state, action) {
+  AsyncStorage.clear();
   return {
     ...state,
     isLoggedIn: false,
-    token: '',
+    token: ""
   };
 }
 
-function applySetUser (state, action) {
-  const {user} = action;
+function applySetUser(state, action) {
+  const { user } = action;
   return {
     ...state,
-    profile: user,
+    profile: user
   };
 }
 
 // Exports
 
 const actionCreators = {
-  login,
+  login
 };
 
-export {actionCreators};
+export { actionCreators };
 // Default Reducer Export
 
 export default reducer;
